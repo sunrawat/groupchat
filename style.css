@@ -53,7 +53,8 @@ header  img {
     margin: 10px;
     text-align: center;
     background: #bfbfbf;
-    width: 152px;
+    width: 65%;
+    background: #e3e3e3;
     color: black;
     border-radius: 22px;
     padding: 4px;
