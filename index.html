@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Chat App</title>
     <link rel="stylesheet" href="style.css">
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="https://gpchats.herokuapp.com/socket.io/socket.io.js"></script>
 
 </head>
 <body>
@@ -34,7 +34,7 @@
                 container.innerHTML += '<div class="new-j">'+name +' has joined the chat.</div>';
         }
 
-        const socket = io('http://localhost:3000');
+        const socket = io('https://gpchats.herokuapp.com');
         const f = document.getElementById('sendContainer');
         const msgToSend = document.getElementById('msgToSend');
         const container = document.getElementById('container');
