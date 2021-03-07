@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Chat App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+
+</head>
+<body>
+    <header>
+        <img src="./image/logo.png" alt="">
+    </header>
+    <div class="container" id="container">
+    </div>
+    <div class="bottom">
+        <input type="text" id="msgToSend" placeholder="Press enter to send">
+    </div>
+        
+    <script>
+        function append(msg, section){
+            console.log(msg);
+            if(section == 'left') {
+                container.innerHTML += '<div class="msg left"><div class="profile"><img src="./image/user.png" class="p2" />'+ msg.name +'</div><div class="message">'+ msg.message +'</div></div>'
+            }else{
+                container.innerHTML += '<div class="msg right"><div class="profile"><img src="./image/user.png" class="p" />'+ msg.name +'</div><div class="message">'+ msg.message +'</div></div>'
+   
+            }
+        }
+
+        function appendNew(name){
+                container.innerHTML += '<div class="new-j">'+name +' has joined the chat.</div>';
+        }
+
+        const socket = io('http://localhost:3000');
+        const f = document.getElementById('sendContainer');
+        const msgToSend = document.getElementById('msgToSend');
+        const container = document.getElementById('container');
+    
+        const j = document.getElementById('new-j');
+
+       let userName = prompt("Enter your name");
+       userName = userName ? userName: 'Anonymous';
+        socket.on("user-joined", name => {
+            appendNew(name);
+        });
+        socket.on("message-recieved", message => {
+                console.log(message);
+                append(message, 'left');
+        });
+    
+        socket.emit("new-user-joined", userName);
+
+        function sendMessageToServer(){
+            if( msgToSend.value.length > 0) {
+                socket.emit("send", msgToSend.value);
+                msg = {name: userName, message: msgToSend.value}; 
+                append(msg, 'right');
+                msgToSend.value = '';
+            }
+        }
+        msgToSend.addEventListener('keypress', (function(e) {
+            if(e.keyCode == 13) {
+                sendMessageToServer();
+            }
+        }));
+    </script>
+
+</body>
+</html>
